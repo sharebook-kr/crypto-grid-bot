@@ -32,6 +32,7 @@ def calculate_rsi(df):
     df['AU'] = df['상승폭'].ewm(alpha=1/14, min_periods=14).mean()
     df['AD'] = df['하락폭'].ewm(alpha=1/14, min_periods=14).mean()
     df['RSI'] = df['AU'] / (df['AU'] + df['AD']) * 100
+    return df
 
 def update_data():
     # fetch ohlcv
@@ -51,8 +52,8 @@ def update_data():
 while True:
     now = datetime.datetime.now()
     df = update_data()
-    calculate_rsi(df)
-    rsi = df.iloc[-1]['RSI']
+    df_rsi = calculate_rsi(df)
+    rsi = df_rsi.iloc[-1]['RSI']
     print(now, rsi)
     time.sleep(1)
 
